@@ -32,6 +32,8 @@ function getAllRecords() {
 }
 
 function addRecord(record){
+    console.log(record);
+    
     $.ajax({
         method: 'POST',
         url: '/record',
@@ -55,7 +57,7 @@ function displayAllRecords(record) {
 function makeRowFor(record){
     let rowHtml = `<tr>
     <td>${record.artist}</td>
-    <td>${record.albumName}</td>
+    <td>${record.album}</td>
     <td>${record.year}</td>
     <td>${record.genre.join(', ')}</td>
     </tr>`;
