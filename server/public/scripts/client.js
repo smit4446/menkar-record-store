@@ -1,66 +1,48 @@
-$(document).ready(onReady);
+let myApp = angular.module('myApp', []);
 
-function onReady(){
-    console.log('client side');
-    getAllRecords();
-    $('#submitButton').on('click', function(event){
-        event.preventDefault();
-        let record = getNewRecord();
-        addRecord(record);
-    })
-    getAllRecords();
-}
-
-function getNewRecord() {
-    let record = {
-        artist: $('#in-artist').val(),
-        album: $('#in-album').val(),
-        year: $('#in-year').val(),
-        genre: $('#in-genre').val()
-    }
-    return record;
-}
-
-function getAllRecords() {
-    $.ajax({
-        method: 'GET',
-        url: '/record'
-    }).then(function(response){
-        displayAllRecords(response);
-    })
+myApp.controller('RecordStoreController', ['$http', function($http) {
+    console.log('NG');
+    let vm = this;
+    vm.records = [];
     
-}
-
-function addRecord(record){
-    console.log(record);
-    
-    $.ajax({
-        method: 'POST',
-        url: '/record',
-        data: record
-    }).then(function(response){
-        getAllRecords();
-    }).catch(function(response){
-        console.log('Something bad happened', status);
-        
-    })
-}
-
-function displayAllRecords(record) {
-    let $recordsTarget = $('#records')
-    $recordsTarget.empty();
-    for (let r of record){
-        $recordsTarget.append( makeRowFor (r));
+    vm.getNewRecord = function() {
+        let newRecord = {
+            artist: vm.artist,
+            album: vm.album,
+            year: vm.year,
+            genre: vm.genre
+        } 
+        console.log('newRecord', newRecord);
+        $http({
+            method: 'POST',
+            url: '/record',
+            data: newRecord
+        }).then(function(response) {
+            vm.requestRecords();
+            vm.artist = '';
+            vm.album = '';
+            vm.year = '';
+            vm.genre = '';
+        }).catch(function(error) {
+            console.log('Error posting movie', error); 
+        }) 
+        console.log('Your records', vm.records);
     }
-}
 
-function makeRowFor(record){
-    let rowHtml = `<tr>
-    <td>${record.artist}</td>
-    <td>${record.album}</td>
-    <td>${record.year}</td>
-    <td>${record.genre.join(', ')}</td>
-    </tr>`;
-    console.log(rowHtml);
-    return rowHtml;
-}
+    vm.requestRecords = function() {
+        $http({
+            method: 'GET',
+            url: '/record'
+        }).then(function(response){
+            console.log('got the response from the server', response.data);
+            vm.records = response.data;
+            console.log(vm.records);
+        }).catch(function(error){
+            console.log('error getting records', error);
+        }) 
+    }
+    console.log('RecordStoreController is created');
+    vm.requestRecords();
+}]);//end controller
+
+

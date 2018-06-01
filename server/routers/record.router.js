@@ -19,7 +19,7 @@ router.get('/',(req,res) => {
         res.send(data);  
     }).catch((error) =>{
         console.log('error from mongo', error);
-        res.send(500);  
+        res.sendStatus(501);  
     })
 });
 

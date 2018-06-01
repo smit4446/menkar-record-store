@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="vendors/jquery-3.3.1.min.js"></script>
+    <script src="vendors/angular.min.js"></script>
     <script src="scripts/client.js"></script>
     <link rel="stylesheet" href="vendors/bootstrap.min.css">
     <title>Menkar Record Store</title>
@@ -13,17 +13,20 @@
     <h1>Menkar Record Store</h1>
 <section>
     <form>
-        <input placeholder="Artist" type="text" id="in-artist"/>
-        <input placeholder="Album" type="text" id="in-album"/>
-        <input placeholder="Year" type="number" id="in-year"/>
-        <input placeholder="Genre" type="text" id="in-genre"/>
-        <input type="submit" value ="Add Record"id="submitButton"/>
+        
 
     </form>
 </section>
 
 <section>
     <h2>All Records</h2>
+    <div id = "main" ng-app = "myApp">
+    <div ng-controller = "RecordStoreController as RSC">
+        <input placeholder="Artist" type="text" ng-model = "RSC.artist"/>
+        <input placeholder="Album" type="text" ng-model = "RSC.album"/>
+        <input placeholder="Year" type="number" ng-model = "RSC.year"/>
+        <input placeholder="Genre" type="text" ng-model = "RSC.genre"/>
+        <button ng-click = "RSC.getNewRecord()">Post Record</button>
     <table class = "table table-striped">
         <thead>
             <tr>
@@ -34,9 +37,16 @@
             </tr>
         </thead>
         <tbody id ="records">
-
+            <tr ng-repeat = "record in RSC.records">
+                <td>{{record.artist}}</td>
+                <td>{{record.album}}</td>
+                <td>{{record.year}}</td>
+                <td>{{record.genre}}</td>
+            </tr>
         </tbody>
     </table>
+</div>
+</div>
 </section>
 </body>
 </html>

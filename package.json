@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/smit4446/menkar-record-store#readme",
   "dependencies": {
+    "angular": "^1.7.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.1.3"
